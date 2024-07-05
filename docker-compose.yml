@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    container_name: app
+    network_mode: host
+    depends_on:
+      - postgres
+      - nginx
+    volumes:
+      - .:/app
+    environment:
+      SECRET_KEY: django-insecure-idi%$4prf$30b&yiluosqfat!k#8i=e@@6-*^51!#i4zvyy7&)
+      POSTGRES_DATABASE: test
+      POSTGRES_USERNAME: test
+      POSTGRES_PASSWORD: test
+      HOST: localhost
+      PORT: 5432
+    command: ["ash", "python", "manage.py", "runserver"]
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:alpine
+    container_name: test-postgres
+    network_mode: host
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: test-nginx
+    network_mode: host
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    restart: unless-stopped
+
+volumes:
+  db: null

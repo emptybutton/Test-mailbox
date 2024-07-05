@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Test-mailbox</title>
+</head>
+<body>
+    <div id="counter-panel">
+        In proccess: <span id="counter">0</span>
+    </div>
+    <div id="form">
+        <input id="login-input" type="text" placeholder="Login">
+        <input id="password-input" type="password" placeholder="Password">
+        <button id="start-button">Start</button>
+    </div>
+    <div id="messages"></div>
+    <script>
+        const socket = new WebSocket(
+            `ws://${window.location.host}/ws/messages/`,
+        );
+
+        const loginElement = document.querySelector("#login-input");
+        const passwordElement = document.querySelector("#password-input");
+        const startButton = document.querySelector("#start-button");
+        const messageListElement = document.querySelector("#messages");
+        const counterElement = document.querySelector("#counter");
+        var counter = parseInt(counterElement.innerHTML);
+
+        function messageElementOf(data) {
+            const element = document.createElement("div");
+            element.innerHTML = `subject: ${data.subject}; sentDate: ${data.sentDate}; receivedDate: ${receivedDate}; text: ${text};`;
+        
+            return element;
+        }
+
+        socket.onmessage = event => {
+            const data = JSON.parse(event.data);
+            
+            if (data.errorType !== undefined) {
+                console.error(data.errorType);
+                return;
+            }
+
+            if (data.counterDelta !== undefined) {
+                counter += data.counterDelta;
+                counterElement.innerHTML = `${counter}`;
+                return;
+            }
+
+            if (data.message !== undefined) {
+                counter--;
+                counterElement.innerHTML = `${counter}`;
+
+                messageListElement.appendChild(messageElementOf(data.message));
+                return;
+            }
+        };
+
+        startButton.onclick = event => {
+            socket.connect();
+            const request = {
+                "login": loginElement.value,
+                "password": passwordElement.value,
+            }
+
+            socket.send(JSON.stringify(request));
+        }
+    </script>
+</body>
+</html>
