@@ -11,6 +11,7 @@ services:
       - .:/app
     environment:
       SECRET_KEY: django-insecure-idi%$4prf$30b&yiluosqfat!k#8i=e@@6-*^51!#i4zvyy7&)
+      DEBUG: true
       POSTGRES_DATABASE: test
       POSTGRES_USERNAME: test
       POSTGRES_PASSWORD: test

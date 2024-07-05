@@ -5,7 +5,7 @@ from channels.generic.websocket import WebsocketConsumer
 from mails.services.messages import (
     load_new_messages, NoAccessToMailboxError
 )
-from mails.model import Message
+from mails.models import Message
 
 
 class MessageConsumer(WebsocketConsumer):

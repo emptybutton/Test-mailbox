@@ -10,18 +10,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env.str("SECRET_KEY")
 
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
+
+    'daphne',
 
     'mails',
 ]
@@ -54,7 +56,7 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = "box.asgi.application"
+ASGI_APPLICATION = 'box.asgi.application'
 WSGI_APPLICATION = 'box.wsgi.application'
 
 

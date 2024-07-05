@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 import email
 import imaplib
-from typing import Iterable
+from typing import Iterable, Optional
 
 from django.contrib.auth.hashers import check_password
 
-from mails.models import Message, Mailbox
+from mails.models import Message, Mailbox, PinnedFile
 
 
 class MailboxGateway:
@@ -59,7 +59,7 @@ class IMAPServerGateway:
     @classmethod
     def _body_of(raw_message) -> str:
         if not raw_message.is_multipart():
-            raw_message.get_payload(decode=True).decode('utf-8')
+            return raw_message.get_payload(decode=True).decode('utf-8')
 
         for part in raw_message.walk():
             if part.get_content_type() == 'text/plain':
