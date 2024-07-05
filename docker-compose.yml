@@ -14,9 +14,9 @@ services:
       POSTGRES_DATABASE: test
       POSTGRES_USERNAME: test
       POSTGRES_PASSWORD: test
-      HOST: localhost
-      PORT: 5432
-    command: ["ash", "python", "manage.py", "runserver"]
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    command: ["python", "manage.py", "runserver"]
     restart: unless-stopped
 
   postgres:

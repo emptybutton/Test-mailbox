@@ -54,6 +54,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "box.asgi.application"
 WSGI_APPLICATION = 'box.wsgi.application'
 
 
